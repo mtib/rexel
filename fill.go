@@ -26,6 +26,6 @@ func Automate(inputFile string) error {
 	if err != nil {
 		return err
 	}
-	r.Prepare()
+	r.Prepare(reader.RTF_FORMAT)
 	return FillTmpl(&r, fmt.Sprintf("%s.rtf", inputFile))
 }

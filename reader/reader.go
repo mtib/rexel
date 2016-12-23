@@ -13,6 +13,11 @@ type Rexel struct {
 	origin   string
 }
 
+const (
+	RTF_FORMAT  = "rtf"
+	HTML_FORMAT = "html"
+)
+
 func Extract(file string) (Rexel, error) {
 	byteData, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -56,14 +61,14 @@ func (r Rexel) String() string {
 	return rString
 }
 
-func (r *Rexel) Prepare() (err error) {
+func (r *Rexel) Prepare(format string) (err error) {
 	r.labels = make(map[string]string, len(r.row))
 	// TODO support more keywords
 	k := 0
 	for k < len(r.row) {
 		var label string
 		var display string
-		label, display, k = keyword(r, k)
+		label, display, k = keyword(r, k, format)
 		r.labels[label] = display
 		// fmt.Printf("found label '%s' with content: '%s'\n", label, display)
 	}
