@@ -64,6 +64,43 @@ func main() {
 	verbf(fmt.Sprint(rex), verbose)
 }
 
+func Fill(tmplFile, dataFile, outputFile string) error {
+	rex, extractError := reader.Extract(dataFile)
+	if extractError != nil {
+		return extractError
+	}
+	rex.Prepare((func(outf string) string {
+		switch {
+		case strings.HasSuffix(outf, ".rtf"):
+			return reader.RTF_FORMAT
+		case strings.HasSuffix(outf, ".html"):
+			return reader.HTML_FORMAT
+		}
+		return reader.RTF_FORMAT
+	})(tmplFile))
+
+	var file io.WriteCloser
+	switch outputFile {
+	case "stdout":
+		file = os.Stdout
+	default:
+		file, _ = os.OpenFile(outputFile, os.O_CREATE|os.O_RDWR, 0644)
+		defer file.Close()
+	}
+
+	tmpl, tmplErr := template.ParseFiles(tmplFile)
+
+	if tmplErr != nil {
+		return tmplErr
+	}
+	fillErr := tmpl.Execute(file, &rex)
+
+	if fillErr != nil {
+		return fillErr
+	}
+	return nil
+}
+
 func verbf(str string, v *bool) {
 	if *v {
 		fmt.Printf("%s\n", str)
