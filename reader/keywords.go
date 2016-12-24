@@ -57,13 +57,13 @@ func table(param *Rexel, left, top int, format string) (string, string, int) {
 		cmd := exec.Command("pandoc", "-f", "html", "-t", "rtf")
 		in, _ := cmd.StdinPipe()
 		out, _ := cmd.StdoutPipe()
-		fmt.Println(cmd)
+		// fmt.Println(cmd)
 		io.WriteString(in, textrep)
 		in.Close()
-		xerr := cmd.Start()
-		fmt.Println(xerr)
+		cmd.Start() // xerr := ...
+		// fmt.Println(xerr)
 		byterep, _ := ioutil.ReadAll(out)
-		fmt.Println(byterep)
+		// fmt.Println(byterep)
 		return "table", string(byterep), end
 	}
 	return "UNKNOWN", "UNKNOWN", top + 1
