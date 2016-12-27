@@ -11,7 +11,7 @@ import (
 )
 
 const useArgs = `Use rexel like this:
-    rexel <template> <data> [-v] [-o <output>]`
+    rexel [-v] [-o <output>] <template> <data>`
 
 func main() {
 	output := flag.String("o", "stdout", "file to output to")
