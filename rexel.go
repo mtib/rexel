@@ -57,7 +57,8 @@ func main() {
 
 	tmpl, _ := template.ParseFiles(tmplFile)
 	fillErr := tmpl.Execute(file, &rex)
-
+	//fmt.Printf(file)
+	//fmt.Sprint(&rex)
 	if fillErr != nil {
 		fmt.Errorf("was not able to fill the template")
 	}
